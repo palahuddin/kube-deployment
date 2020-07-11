@@ -68,6 +68,13 @@ spec:
         image: harbor.jojonomic.io/jojolab/wp-mysql
         ports:
         - containerPort: 3306
+        volumeMounts:
+            - name: mysql-storage
+              mountPath: /opt/mysql
+      volumes:
+      - name: mysql-storage
+        emptyDir: {}
+        
 --- 
 
 apiVersion: v1
