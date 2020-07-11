@@ -7,11 +7,11 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 20Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/root/data"
+    path: "/home/ap_falah/data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
