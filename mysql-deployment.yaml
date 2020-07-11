@@ -1,58 +1,42 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress-mysql
-  labels:
-    app: wordpress
+  name: mysql
 spec:
   ports:
-    - port: 3306
+  - port: 3306
   selector:
-    app: wordpress
-    tier: mysql
+    app: mysql
   clusterIP: None
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-  labels:
-    app: wordpress
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: wordpress-mysql
-  labels:
-    app: wordpress
+  name: mysql
 spec:
   selector:
     matchLabels:
-      app: wordpress
-      tier: mysql
+      app: mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: wordpress
-        tier: mysql
+        app: mysql
     spec:
       containers:
-      - image: harbor.jojonomic.io/jojolab/wp-mysql
+      - image: mysql:5.6
         name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
         ports:
         - containerPort: 3306
           name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+          mountPath: /mnt/data
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
