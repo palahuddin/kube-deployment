@@ -1,0 +1,105 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-gateway-pod
+  labels: 
+    name: api-gateway-app-pod
+    app: app-demo-kube   
+spec: 
+  containers:
+   - name: api-gateway
+     image: harbor.jojonomic.io/jojolab/api-gateway@sha256:03e7c46187a64c2faacb3cc91a250272f933d0d2bff033b505872b15ef14caa9
+     ports:
+     - containerPort: 80
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway-service
+  labels: 
+    name: api-gateway-service
+    app: app-demo-kube   
+spec: 
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30000
+  type: NodePort
+  selector:
+    name: api-gateway-app-pod
+    app: app-demo-kube
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memcached
+  labels: 
+    name: app-memcached-pod
+    app: app-demo-kube   
+spec: 
+  containers:
+   - name: memcached
+     image: harbor.jojonomic.io/jojolab/memcache@sha256:48cb7207e3d34871893fa1628f3a4984375153e9942facf82e25935b0a633c8a
+     ports:
+     - containerPort: 11211
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: memcached
+  labels: 
+    name: api-gateway-memcached-service
+    app: app-demo-kube   
+spec: 
+  ports:
+  - port: 11211
+    targetPort: 11211
+    nodePort: 32222
+  type: NodePort
+  selector:
+    name: api-gateway-app-memcached-pod
+    app: app-demo-kube
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  labels: 
+    name: mysql-pod
+    app: app-demo-kube   
+spec: 
+  containers:
+   - name: mysql
+     image: docker.io/falahalaf/wp-mysql
+     ports:
+     - containerPort: 3306
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels: 
+    name: mysql-service
+    app: app-demo-kube   
+spec: 
+  ports:
+  - port: 3306
+    targetPort: 3306
+    nodePort: 30306
+  type: NodePort
+  selector:
+    name: mysql-pod
+    app: app-demo-kube
+
+
