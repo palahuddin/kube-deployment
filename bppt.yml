@@ -9,7 +9,7 @@ metadata:
 spec: 
   containers:
    - name: api-gateway
-     image: harbor.jojonomic.io/jojolab/api-gateway@sha256:03e7c46187a64c2faacb3cc91a250272f933d0d2bff033b505872b15ef14caa9
+     image: 
      ports:
      - containerPort: 80
 
@@ -44,7 +44,7 @@ metadata:
 spec: 
   containers:
    - name: memcached
-     image: harbor.jojonomic.io/jojolab/memcache@sha256:48cb7207e3d34871893fa1628f3a4984375153e9942facf82e25935b0a633c8a
+     image: 
      ports:
      - containerPort: 11211
 
